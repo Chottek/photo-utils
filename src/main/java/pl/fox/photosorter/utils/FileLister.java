@@ -9,20 +9,23 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 
+import static pl.fox.photosorter.utils.PropertySource.getProperty;
+
 public class FileLister {
 
     private static final String[] allowedExtensions = parseAllowedExtensions();
     
-    public List<File> getFiles() throws IOException {
-        var input = PropertySource.getProperty("inputPath");
-        
-        try(Stream<Path> paths = Files.walk(Paths.get(input))) {
+    public List<File> getFiles() {
+        var input = getProperty("inputPath");
+        int maxDepth = Integer.parseInt(getProperty("maxDepth"));
+
+        try(Stream<Path> paths = Files.walk(Paths.get(input), maxDepth)) {
             return paths.filter(Files::isRegularFile)
                     .map(Path::toFile)
                     .filter(this::hasAllowedExtension)
                     .toList();
         } catch (IOException ie) {
-            throw new IOException(ie);
+            throw new IllegalStateException("Cannot load image files from input path = " + input, ie);
         }
     }
     
@@ -32,7 +35,7 @@ public class FileLister {
     }
     
     private static String[] parseAllowedExtensions() {
-        var allowedExtensionsProperty = PropertySource.getProperty("allowedExtensions");
+        var allowedExtensionsProperty = getProperty("allowedExtensions");
         return Arrays.stream(allowedExtensionsProperty.split(","))
                 .map(String::trim)
                 .toArray(String[]::new);
