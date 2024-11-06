@@ -13,6 +13,10 @@ public class PropertySource {
         return properties.getProperty(key);
     }
 
+    public static String getProperty(String key, String defaultValue) {
+        return properties.getProperty(key, defaultValue);
+    }
+
     private static Properties loadProperties() {
         try (var in = PropertySource.class.getResourceAsStream(PROPERTIES_FILE)) {
             var properties = new Properties();
