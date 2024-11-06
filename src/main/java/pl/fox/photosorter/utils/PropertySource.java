@@ -6,19 +6,24 @@ import java.util.Properties;
 public class PropertySource {
 
     private static final String PROPERTIES_FILE = "/env.properties";
-
-    private static final Properties properties = loadProperties();
+    private static final Properties PROPERTIES = loadProperties();
 
     public static String getProperty(String key) {
-        try {
-            return properties.getProperty(key);
-        } catch (NullPointerException e) {
-            throw new IllegalArgumentException("Could not find property " + key);
+        var property = PROPERTIES.getProperty(key);
+
+        if (property == null) {
+            throw new IllegalArgumentException("Could not find property [" + key + "]");
         }
+
+        if (property.isEmpty()) {
+            throw new IllegalArgumentException("Value for property [" + key + "] is empty, please specify correct value in " + PROPERTIES_FILE + " file");
+        }
+
+        return property;
     }
 
     public static String getProperty(String key, String defaultValue) {
-        return properties.getProperty(key, defaultValue);
+        return PROPERTIES.getProperty(key, defaultValue);
     }
 
     private static Properties loadProperties() {

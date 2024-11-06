@@ -33,8 +33,10 @@ public class Processor {
                 getProperty("outputPath") :
                 getProperty("inputPath") + "_OUTPUT";
 
-        var hasBeenCreated = new File(outputDirName).mkdirs();
-        System.out.println("Output directory (" + outputDirName + ") created: " + hasBeenCreated);
+        if (!new File(outputDirName).exists()) {
+            var hasBeenCreated = new File(outputDirName).mkdirs();
+            System.out.println("Output directory (" + outputDirName + ") created: " + hasBeenCreated);
+        }
     }
 
 }
