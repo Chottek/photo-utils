@@ -14,8 +14,13 @@ public class Processor {
     private String outputDirName;
 
     public void run() {
-        final var files = fileUtils.getFiles();
-        final var fileMap = files.stream().collect(Collectors.toMap(
+        final var filesList = fileUtils.getFiles();
+
+        if (filesList.isEmpty()) {
+            throw new IllegalArgumentException("No files found!");
+        }
+
+        final var fileMap = filesList.stream().collect(Collectors.toMap(
                 file -> file,
                 dateExtractor::extract
         ));

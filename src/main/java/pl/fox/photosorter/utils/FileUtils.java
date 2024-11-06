@@ -36,10 +36,12 @@ public class FileUtils {
         int maxDepth = Integer.parseInt(getProperty("maxDepth"));
 
         try(Stream<Path> paths = Files.walk(Paths.get(input), maxDepth)) {
-            return paths.filter(Files::isRegularFile)
+            var filesList =  paths.filter(Files::isRegularFile)
                     .map(Path::toFile)
                     .filter(this::hasAllowedExtension)
                     .toList();
+            System.out.println("Found " + filesList.size() + " files");
+            return filesList;
         } catch (IOException ie) {
             throw new IllegalStateException("Cannot load image files from input path = " + input, ie);
         }

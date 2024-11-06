@@ -18,7 +18,8 @@ public class DateExtractor extends Extractor {
 
     @Override
     public String extract(File file) {
-        var date = getDateFromMetadata(file).orElseThrow();
+        System.out.println("Handling " + file.getName());
+        var date = getDateFromMetadata(file).orElseThrow(); //Catch this later and gather in list of errors
         Date inputFormatted;
         try {
             inputFormatted = INPUT_FORMAT.parse(date);
