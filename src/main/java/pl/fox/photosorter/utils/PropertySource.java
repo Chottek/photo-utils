@@ -1,4 +1,4 @@
-package pl.fox.photosorter;
+package pl.fox.photosorter.utils;
 
 import java.io.IOException;
 import java.util.Properties;
@@ -10,7 +10,11 @@ public class PropertySource {
     private static final Properties properties = loadProperties();
 
     public static String getProperty(String key) {
-        return properties.getProperty(key);
+        try {
+            return properties.getProperty(key);
+        } catch (NullPointerException e) {
+            throw new IllegalArgumentException("Could not find property " + key);
+        }
     }
 
     public static String getProperty(String key, String defaultValue) {

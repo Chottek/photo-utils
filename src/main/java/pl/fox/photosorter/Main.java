@@ -1,5 +1,7 @@
 package pl.fox.photosorter;
 
+import pl.fox.photosorter.utils.PropertySource;
+
 public class Main {
 
     public static void main(String[] args) {
