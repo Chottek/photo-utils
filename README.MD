@@ -12,6 +12,11 @@ A small project to handle pictures and sort them by date when they were taken
   - if it's disabled, then output folder will be created with name `<input_path>_OUTPUT` 
 - allowed file extensions to be processed
 - date format to be part of the filename
+
+- concurrenceThreshold - amount of files determining whether sync or asynchronous approach should be used
+- maxPoolSize - maximum size of the concurrent Thread Pool
+- singleThreadFileThreshold - amount of files to be processed by single concurrent Thread
+
 ---
 ### Exif Metadata
 

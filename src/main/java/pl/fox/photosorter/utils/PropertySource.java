@@ -22,6 +22,10 @@ public class PropertySource {
         return property;
     }
 
+    public static Integer getPropertyAsInt(String key, Integer defaultValue) {
+        return Integer.parseInt(PROPERTIES.getProperty(key, defaultValue.toString()));
+    }
+
     public static String getProperty(String key, String defaultValue) {
         return PROPERTIES.getProperty(key, defaultValue);
     }

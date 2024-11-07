@@ -25,6 +25,18 @@ public class ErrorHandler {
         }
     }
 
+    //TODO: Maybe copy the errored into separate folder called <INPUT_NAME>_ERRORS ??
+    public void printErroredFiles() {
+        if (errorMap.isEmpty()) {
+            return;
+        }
+
+        System.out.println("ERRORS:");
+        errorMap.forEach((key, value) -> {
+            System.out.println("Reason: [" + key + "] " + value);
+        });
+    }
+
     public static ErrorHandler getInstance() {
         if (instance == null) {
             throw new IllegalStateException("ErrorHandler has not been initialized");

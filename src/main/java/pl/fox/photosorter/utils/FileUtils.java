@@ -32,7 +32,7 @@ public class FileUtils {
         }
     }
 
-    public void createOutputDirectory() {
+    public String createOutputDirectory() {
         var isCustomOutputEnabled = parseBoolean(getProperty("customOutputEnabled"));
 
         outputDirName = isCustomOutputEnabled ?
@@ -43,6 +43,8 @@ public class FileUtils {
             var hasBeenCreated = new File(outputDirName).mkdirs();
             System.out.println("Output directory (" + outputDirName + ") created: " + hasBeenCreated);
         }
+
+        return outputDirName;
     }
 
     public List<File> getFiles() {
