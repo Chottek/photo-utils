@@ -29,6 +29,9 @@ More values can be found here -> https://exiv2.org/tags.html
 
 ### Changelog
 
+**1.2** TODO:
+- Adding possibility to copy ERRORed files to _ERROR directory
+
 **1.1**
 - Added concurrent execution in case the file amount threshold is exceeded
   - Thread pool configuration
