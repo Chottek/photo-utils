@@ -5,7 +5,7 @@ import java.util.Properties;
 
 public class PropertySource {
 
-    private static final String PROPERTIES_FILE = "/env.properties";
+    private static final String PROPERTIES_FILE = System.getProperty("configFile", "/env.properties");
     private static final Properties PROPERTIES = loadProperties();
 
     public static String getProperty(String key) {

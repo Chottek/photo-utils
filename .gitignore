@@ -37,3 +37,7 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+
+### Other properties file than the template one ###
+!src/main/resources/env.properties
+src/main/resources/*.properties

@@ -4,8 +4,11 @@ A small project to handle pictures and sort them by date when they were taken
 
 ---
 ### Configuration
-`env.properties` file can be used to configure values
+`env.properties` file can be used to configure values.
+
+Creating own `.properties` file is also possible. Remember to specify `configFile=/<NAME_OF_PROPERTIES_FILE>` flag in run configuration (slash is mandatory)
  
+**Configurable values**: 
 - input path
 - maximum depth of directories for files scanning
 - output path (if customOutputEnabled is set to true)
@@ -29,8 +32,11 @@ More values can be found here -> https://exiv2.org/tags.html
 
 ### Changelog
 
-**1.2** TODO:
+**1.3** TODO:
 - Adding possibility to copy ERRORed files to _ERROR directory
+
+**1.2** 
+- Added possibility to specify own configuration file in `resources` folder
 
 **1.1**
 - Added concurrent execution in case the file amount threshold is exceeded
