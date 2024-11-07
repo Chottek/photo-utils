@@ -15,6 +15,7 @@ A small project to handle pictures and sort them by date when they were taken
 ---
 ### Exif Metadata
 
+
 This project uses **drewnoakes.metadata-extractor** \
 Exif value of `36867` is used to grab the date from metadata \
 More values can be found here -> https://exiv2.org/tags.html
