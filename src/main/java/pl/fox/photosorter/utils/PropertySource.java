@@ -5,7 +5,9 @@ import java.util.Properties;
 
 public class PropertySource {
 
-    private static final String PROPERTIES_FILE = System.getProperty("configFile", "/env.properties");
+    private static final String PROPERTIES_FILE = System.getenv().getOrDefault(
+            "config.file", "/env.properties"
+    );
     private static final Properties PROPERTIES = loadProperties();
 
     public static String getProperty(String key) {
@@ -36,7 +38,7 @@ public class PropertySource {
             properties.load(in);
             return properties;
         } catch (IOException | NullPointerException ie) {
-            throw new IllegalStateException("Could not load properties file", ie);
+            throw new IllegalStateException("Could not load properties file " + PROPERTIES_FILE, ie);
         }
     }
 

@@ -6,7 +6,8 @@ A small project to handle pictures and sort them by date when they were taken
 ### Configuration
 `env.properties` file can be used to configure values.
 
-Creating own `.properties` file is also possible. Remember to specify `configFile=/<NAME_OF_PROPERTIES_FILE>` flag in run configuration (slash is mandatory)
+Creating own `.properties` file is also possible. Remember to specify
+`config.file=/<NAME_OF_PROPERTIES_FILE>` flag in environment variables in run configuration (slash is mandatory)
  
 **Configurable values**: 
 - input path
