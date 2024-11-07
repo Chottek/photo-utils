@@ -29,6 +29,10 @@ More values can be found here -> https://exiv2.org/tags.html
 
 ### Changelog
 
+**1.1**
+- Added concurrent execution in case the file amount threshold is exceeded
+  - Thread pool configuration
+  - Map splitting in smaller pieces to be processed asynchronously
 
 **1.0** 
 - Working base
