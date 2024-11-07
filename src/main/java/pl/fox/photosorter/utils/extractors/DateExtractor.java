@@ -3,7 +3,10 @@ package pl.fox.photosorter.utils.extractors;
 import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 import static pl.fox.photosorter.utils.PropertySource.getProperty;
 
@@ -18,7 +21,6 @@ public class DateExtractor extends Extractor {
 
     @Override
     public String extract(File file) {
-        System.out.println("Handling " + file.getName());
         var date = getDateFromMetadata(file).orElseThrow(); //Catch this later and gather in list of errors
         Date inputFormatted;
         try {
@@ -35,32 +37,5 @@ public class DateExtractor extends Extractor {
                 .filter(Objects::nonNull)
                 .findFirst();
     }
-
-//    private static Optional<String> getDateFromMetadata(File file) {
-//        return getMetadataDirectories(file).stream()
-//                .map(clazz -> {
-//                    var exifCode = exifDateCodes.get(clazz.getClass().getSimpleName());
-//                    return clazz.getString(exifCode);
-//                })
-//                .filter(Objects::nonNull)
-//                .findFirst();
-//    }
-
-
-    //    private static List<? extends ExifDirectoryBase> getMetadataIFD0Directories(File file) {
-//        var metadata = readMetadata(file);
-//        var s = ((ArrayList) metadata.getDirectories()).stream()
-//                .map(e -> {
-//                    try{
-//                        return e;
-//                    } catch(ClassCastException c) {
-//                        return null;
-//                    }
-//                })
-//                .filter(Objects::nonNull)
-//                .map(e -> e.getClass().getSimpleName()).toList();
-//
-//        return s;
-//    }
 
 }

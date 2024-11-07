@@ -10,13 +10,27 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import static java.lang.Boolean.parseBoolean;
+import static org.apache.commons.io.FileUtils.copyFile;
+import static org.apache.commons.io.FilenameUtils.getExtension;
 import static pl.fox.photosorter.utils.PropertySource.getProperty;
 
 public class FileUtils {
 
     private static final String[] allowedExtensions = parseAllowedExtensions();
 
+    private final ErrorHandler errorHandler = ErrorHandler.getInstance();
+
     private String outputDirName;
+
+    public void copyFileToDestination(File file, String fileName) {
+        var filename = fileName + "." + getExtension(file.getName());
+        try {
+            copyFile(file, new File(outputDirName + "/" + filename));
+        } catch (IOException ex) {
+            errorHandler.addErroredFile(file, "Unable to copy file to destination");
+            System.err.println("Unable to copy file " + filename + " to " + outputDirName);
+        }
+    }
 
     public void createOutputDirectory() {
         var isCustomOutputEnabled = parseBoolean(getProperty("customOutputEnabled"));
@@ -35,8 +49,8 @@ public class FileUtils {
         var input = getProperty("inputPath");
         int maxDepth = Integer.parseInt(getProperty("maxDepth"));
 
-        try(Stream<Path> paths = Files.walk(Paths.get(input), maxDepth)) {
-            var filesList =  paths.filter(Files::isRegularFile)
+        try (Stream<Path> paths = Files.walk(Paths.get(input), maxDepth)) {
+            var filesList = paths.filter(Files::isRegularFile)
                     .map(Path::toFile)
                     .filter(this::hasAllowedExtension)
                     .toList();
