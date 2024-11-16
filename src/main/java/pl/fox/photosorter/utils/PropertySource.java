@@ -1,6 +1,8 @@
 package pl.fox.photosorter.utils;
 
 import java.io.IOException;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Properties;
 
 public class PropertySource {
@@ -49,6 +51,15 @@ public class PropertySource {
         } catch (IOException | NullPointerException ie) {
             throw new IllegalStateException("Could not load properties file " + PROPERTIES_FILE, ie);
         }
+    }
+
+    // TODO: If we're getting the Timezone properties, we need to parse it later and add if statement to dateExtractor
+    public static Properties getGroupProperties(String groupKey) {
+        var properties = new Properties();
+        PROPERTIES.entrySet().stream()
+                .filter(entry -> entry.getKey().toString().startsWith(groupKey))
+                .forEach(entry -> properties.setProperty(entry.getKey().toString().substring(entry.getKey().toString().indexOf(groupKey + 1)), entry.getValue().toString()));
+        return properties;
     }
 
     public static void printProperties() {
