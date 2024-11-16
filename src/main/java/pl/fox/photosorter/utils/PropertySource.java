@@ -1,8 +1,6 @@
 package pl.fox.photosorter.utils;
 
 import java.io.IOException;
-import java.util.Map;
-import java.util.Objects;
 import java.util.Properties;
 
 public class PropertySource {

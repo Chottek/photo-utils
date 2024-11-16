@@ -1,18 +1,13 @@
 package pl.fox.photosorter;
 
-import pl.fox.photosorter.utils.PropertySource;
-
-import java.util.Arrays;
+import static pl.fox.photosorter.utils.ArgParser.parseArgs;
+import static pl.fox.photosorter.utils.PropertySource.printProperties;
 
 public class Main {
 
     public static void main(String[] args) {
-//        if (args != null && args.length > 0) {
-//            System.out.println(Arrays.toString(args));
-//            PropertySource.overrideProperty("inputPath", args[0]);
-//        }
-
-        PropertySource.printProperties();
+        parseArgs(args);
+        printProperties();
         new Processor().run();
     }
 
