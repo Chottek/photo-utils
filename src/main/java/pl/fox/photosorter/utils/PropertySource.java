@@ -32,6 +32,15 @@ public class PropertySource {
         return PROPERTIES.getProperty(key, defaultValue);
     }
 
+    public static void overrideProperty(String key, String value) {
+        if (PROPERTIES.containsKey(key)) {
+            PROPERTIES.setProperty(key, value);
+            System.out.println("Property [" + key + "] overridden");
+        } else {
+            System.err.println("Property [" + key + "] not found, unable to override");
+        }
+    }
+
     private static Properties loadProperties() {
         try (var in = PropertySource.class.getResourceAsStream(PROPERTIES_FILE)) {
             var properties = new Properties();
@@ -40,6 +49,10 @@ public class PropertySource {
         } catch (IOException | NullPointerException ie) {
             throw new IllegalStateException("Could not load properties file " + PROPERTIES_FILE, ie);
         }
+    }
+
+    public static void printProperties() {
+        PROPERTIES.forEach((k, v) -> System.out.println("[" + k + "] = " + v));
     }
 
 }
