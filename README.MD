@@ -16,6 +16,7 @@ Creating own `.properties` file is also possible. Remember to specify
   - if it's disabled, then output folder will be created with name `<input_path>_OUTPUT` 
 - allowed file extensions to be processed
 - date format to be part of the filename
+- optionalSuffix - additional string to be appended to the extracted date
 
 - concurrenceThreshold - amount of files determining whether sync or asynchronous approach should be used
 - maxPoolSize - maximum size of the concurrent Thread Pool

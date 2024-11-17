@@ -7,6 +7,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 
 import static java.lang.Boolean.parseBoolean;
@@ -21,6 +22,10 @@ public class FileUtils {
     private final ErrorHandler errorHandler = ErrorHandler.getInstance();
 
     private String outputDirName;
+
+    public String getOutputFileName(File source, String newFilename) {
+       return outputDirName + "/" + newFilename + "." + getExtension(source.getName());
+    }
 
     public void copyFileToDestination(File file, String fileName) {
         var filename = fileName + "." + getExtension(file.getName());
@@ -63,13 +68,24 @@ public class FileUtils {
         }
     }
 
+    public void appendOptionalSuffix(Map<File, String> fileMap, String optionalString) {
+        if (optionalString == null || optionalString.isEmpty()) {
+            return;
+        }
+
+        fileMap.entrySet().forEach(entry ->
+                entry.setValue(entry.getValue() + "_" + optionalString)
+        );
+    }
+
+
     private boolean hasAllowedExtension(File file) {
         return Arrays.stream(allowedExtensions)
                 .anyMatch(extension -> file.getName().toUpperCase().endsWith(extension));
     }
 
     private static String[] parseAllowedExtensions() {
-        var allowedExtensionsProperty = getProperty("allowedExtensions");
+        var allowedExtensionsProperty = getProperty("allowedExtensions", "JPG");
         return Arrays.stream(allowedExtensionsProperty.split(","))
                 .map(String::trim)
                 .toArray(String[]::new);

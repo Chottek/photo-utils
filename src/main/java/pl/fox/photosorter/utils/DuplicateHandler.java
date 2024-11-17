@@ -8,9 +8,7 @@ import java.util.stream.Collectors;
 
 public class DuplicateHandler {
 
-    private DuplicateHandler() {}
-
-    public static void handleDuplicates(Map<File, String> fileMap) {
+    public void handleDuplicates(Map<File, String> fileMap) {
         var duplicates = new HashMap<>(
                 fileMap.entrySet().stream()
                         .collect(Collectors.groupingBy(Map.Entry::getValue)).values().stream()

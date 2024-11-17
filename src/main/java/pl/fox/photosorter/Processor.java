@@ -1,5 +1,6 @@
 package pl.fox.photosorter;
 
+import pl.fox.photosorter.utils.DuplicateHandler;
 import pl.fox.photosorter.utils.ErrorHandler;
 import pl.fox.photosorter.utils.FileUtils;
 import pl.fox.photosorter.utils.extractors.DateExtractor;
@@ -16,8 +17,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-import static pl.fox.photosorter.utils.DuplicateHandler.handleDuplicates;
 import static pl.fox.photosorter.utils.MapDistributor.distribute;
+import static pl.fox.photosorter.utils.PropertySource.getProperty;
 import static pl.fox.photosorter.utils.PropertySource.getPropertyAsInt;
 
 public class Processor {
@@ -25,6 +26,7 @@ public class Processor {
     private final ErrorHandler errorHandler = new ErrorHandler();
     private final FileUtils fileUtils = new FileUtils();
     private final Extractor dateExtractor = new DateExtractor();
+    private final DuplicateHandler duplicateHandler = new DuplicateHandler();
 
     public void run() {
         var filesList = fileUtils.getFiles();
@@ -41,7 +43,8 @@ public class Processor {
             }
         }
 
-        handleDuplicates(fileMap);
+        fileUtils.appendOptionalSuffix(fileMap, getProperty("optionalSuffix", null));
+        duplicateHandler.handleDuplicates(fileMap);
 
         var outputDirName = fileUtils.createOutputDirectory();
 
@@ -63,7 +66,7 @@ public class Processor {
             List<Future<?>> futures = new ArrayList<>();
 
             for (Map<File, String> fileGroup : distributedMaps) {
-                Future<?> future = executorService.submit(new FileCopyTask(fileGroup, outputDirName));
+                Future<?> future = executorService.submit(new FileCopyTask(fileUtils, fileGroup));
                 futures.add(future);
             }
 
