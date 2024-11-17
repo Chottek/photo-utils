@@ -34,8 +34,12 @@ More values can be found here -> https://exiv2.org/tags.html
 
 ### Changelog
 
-**1.3** TODO:
+**1.4** TODO:
 - Adding possibility to copy ERRORed files to _ERROR directory
+- Adding ability to manipulate time zones depending on camera name (in config file)
+
+**1.3** 
+- Added a possibility to append optional suffix to the file name
 
 **1.2** 
 - Added possibility to specify own configuration file in `resources` folder
