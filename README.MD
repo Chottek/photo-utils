@@ -22,6 +22,12 @@ Creating own `.properties` file is also possible. Remember to specify
 - maxPoolSize - maximum size of the concurrent Thread Pool
 - singleThreadFileThreshold - amount of files to be processed by single concurrent Thread
 
+- Timezone configuration
+  - Grouped by `Timezone` group name
+  - example: `Timezone.Canon=GMT+1`
+  - NOTE: If Timezone.General is set, all date values will be set accordingly to the configured timezone
+  - If despite the timezone being set, values don't change, review the configuration
+    - GMT+1 instead of UTC+1, etc.
 ---
 ### Exif Metadata
 
@@ -34,8 +40,10 @@ More values can be found here -> https://exiv2.org/tags.html
 
 ### Changelog
 
-**1.4** TODO:
+**1.5** TODO:
 - Adding possibility to copy ERRORed files to _ERROR directory
+
+**1.4**
 - Adding ability to manipulate time zones depending on camera name (in config file)
 
 **1.3** 

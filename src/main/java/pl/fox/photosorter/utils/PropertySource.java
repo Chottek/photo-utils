@@ -51,12 +51,14 @@ public class PropertySource {
         }
     }
 
-    // TODO: If we're getting the Timezone properties, we need to parse it later and add if statement to dateExtractor
     public static Properties getGroupProperties(String groupKey) {
         var properties = new Properties();
         PROPERTIES.entrySet().stream()
                 .filter(entry -> entry.getKey().toString().startsWith(groupKey))
-                .forEach(entry -> properties.setProperty(entry.getKey().toString().substring(entry.getKey().toString().indexOf(groupKey + 1)), entry.getValue().toString()));
+                .forEach(entry -> {
+                    var keyName = entry.getKey().toString().substring(groupKey.length() + 1);
+                    properties.setProperty(keyName, entry.getValue().toString());
+                });
         return properties;
     }
 

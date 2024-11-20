@@ -1,10 +1,12 @@
 package pl.fox.photosorter;
 
+import pl.fox.photosorter.utils.DateUtils;
 import pl.fox.photosorter.utils.DuplicateHandler;
 import pl.fox.photosorter.utils.ErrorHandler;
 import pl.fox.photosorter.utils.FileUtils;
 import pl.fox.photosorter.utils.extractors.DateExtractor;
 import pl.fox.photosorter.utils.extractors.Extractor;
+import pl.fox.photosorter.utils.extractors.NameExtractor;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -25,8 +27,10 @@ public class Processor {
 
     private final ErrorHandler errorHandler = new ErrorHandler();
     private final FileUtils fileUtils = new FileUtils();
+    private final Extractor nameExtractor = new NameExtractor();
     private final Extractor dateExtractor = new DateExtractor();
     private final DuplicateHandler duplicateHandler = new DuplicateHandler();
+    private final DateUtils dateUtils = new DateUtils();
 
     public void run() {
         var filesList = fileUtils.getFiles();
@@ -37,7 +41,10 @@ public class Processor {
         var fileMap = new HashMap<File, String>();
         for (File file : filesList) {
             try {
-                fileMap.put(file, dateExtractor.extract(file));
+                var cameraName = nameExtractor.extract(file);
+                var date = dateExtractor.extract(file);
+                var formattedDate = dateUtils.formatDate(date, cameraName);
+                fileMap.put(file, formattedDate);
             } catch (NoSuchElementException nse) {
                 errorHandler.addErroredFile(file, "Failed to properly parse metadata");
             }

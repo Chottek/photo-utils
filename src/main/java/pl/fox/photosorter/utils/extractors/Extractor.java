@@ -10,8 +10,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 public abstract class Extractor {
+
+    protected int exifSourceDirNumber;
 
     private static final List<Class<? extends ExifDirectoryBase>> exifSourcesDirectories = List.of(
             ExifSubIFDDirectory.class
@@ -29,12 +33,19 @@ public abstract class Extractor {
         }
     }
 
-    protected List<? extends ExifDirectoryBase> getMetadataDirectories(File file) {
+    private List<? extends ExifDirectoryBase> getMetadataDirectories(File file) {
         var metadata = readMetadata(file);
         return exifSourcesDirectories.stream()
                 .map(metadata::getDirectoriesOfType)
                 .flatMap(Collection::stream)
                 .toList();
+    }
+
+    protected Optional<String> getValueFromMetadata(File file) {
+        return getMetadataDirectories(file).stream()
+                .map(clazz -> clazz.getString(exifSourceDirNumber))
+                .filter(Objects::nonNull)
+                .findFirst();
     }
 
 }
