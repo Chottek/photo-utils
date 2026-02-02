@@ -9,17 +9,18 @@ import java.util.stream.Collectors;
 public class DuplicateHandler {
 
     public void handleDuplicates(Map<File, String> fileMap) {
-        var duplicates = new HashMap<>(
-                fileMap.entrySet().stream()
-                        .collect(Collectors.groupingBy(Map.Entry::getValue)).values().stream()
-                        .collect(Collectors.toMap(
-                                item -> item.getFirst().getValue(),
-                                item -> new ArrayList<>(
-                                        item.stream()
-                                                .map(Map.Entry::getKey)
-                                                .toList()
-                                ))
-                        )).entrySet().stream()
+        var c = fileMap.entrySet().stream()
+                .collect(Collectors.groupingBy(Map.Entry::getValue)).values().stream()
+                .collect(Collectors.toMap(
+                        item -> item.getFirst().getValue(),
+                        item -> new ArrayList<>(
+                                item.stream()
+                                        .map(Map.Entry::getKey)
+                                        .toList()
+                        ))
+                );
+
+        var duplicates = new HashMap<>(c).entrySet().stream()
                 .filter(duplicateList -> duplicateList.getValue().size() > 1)
                 .toList();
 

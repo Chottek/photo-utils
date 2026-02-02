@@ -52,7 +52,8 @@ public class DateUtils {
                     .map(Map.Entry::getValue).findFirst().orElse(null);
         }
 
-        if (timezoneSettings == null && generalTimezoneProperty != null) {
+        if ((timezoneSettings == null && generalTimezoneProperty != null) ||
+        (timezoneSettings.isEmpty() && generalTimezoneProperty != null)) {
             return generalTimezoneProperty;
         }
 

@@ -50,7 +50,9 @@ public class Processor {
             }
         }
 
-        fileUtils.appendOptionalSuffix(fileMap, getProperty("optionalSuffix", null));
+        var optionalSuffix = getProperty("optionalSuffix", null);
+        fileUtils.appendOptionalSuffix(fileMap, optionalSuffix);
+
         duplicateHandler.handleDuplicates(fileMap);
 
         var outputDirName = fileUtils.createOutputDirectory();
@@ -58,14 +60,14 @@ public class Processor {
         if (fileMap.size() < getPropertyAsInt("concurrenceThreshold", 1000)) {
             fileMap.forEach(fileUtils::copyFileToDestination); //Sync
         } else {
-            startCopyPool(fileMap, outputDirName); //Async
+            startCopyPool(fileMap); //Async
         }
 
         System.out.println("Files copied successfully.");
         errorHandler.printErroredFiles();
     }
 
-    private void startCopyPool(Map<File, String> fileMap, String outputDirName) {
+    private void startCopyPool(Map<File, String> fileMap) {
         var poolSize = getPropertyAsInt("maxPoolSize", 4);
         List<Map<File, String>> distributedMaps = distribute(fileMap);
 

@@ -23,11 +23,17 @@ public class FileUtils {
 
     private String outputDirName;
 
+    //TODO: Check the async flow - maybe this can be removed?
     public String getOutputFileName(File source, String newFilename) {
        return outputDirName + "/" + newFilename + "." + getExtension(source.getName());
     }
 
     public void copyFileToDestination(File file, String fileName) {
+        var addFolderNameSuffix = Boolean.parseBoolean(getProperty("subfolderNameSuffix", "false"));
+        if(addFolderNameSuffix) {
+            fileName += "_" + file.getParentFile().getName();
+        }
+
         var filename = fileName + "." + getExtension(file.getName());
         try {
             copyFile(file, new File(outputDirName + "/" + filename));
