@@ -16,7 +16,9 @@ public class DateUtils {
     );
 
     static {
-        System.out.println("Current timeZone: " + DATE_FORMATTER.getTimeZone());
+        System.out.println("Current timeZone: " + DATE_FORMATTER.getTimeZone().getDisplayName() +
+                " - " + DATE_FORMATTER.getTimeZone().getID()
+        );
     }
 
     public String formatDate(String date, String sourceName) {
