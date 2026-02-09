@@ -1,11 +1,17 @@
 package pl.fox.photosorter.utils;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Arrays;
+import java.util.Optional;
 import java.util.Properties;
 
 public class PropertySource {
 
-    private static final String PROPERTIES_FILE = System.getenv().getOrDefault(
+    private static String PROPERTIES_FILE = System.getenv().getOrDefault(
             "config.file", "/env.properties"
     );
     private static final Properties PROPERTIES = loadProperties();
@@ -41,14 +47,41 @@ public class PropertySource {
         }
     }
 
+    private static Optional<File> getOtherPropertyFile() {
+        var isJar = ClassLoader.getSystemResource("pl/fox/photosorter/Main.class").toString().startsWith("jar");
+
+        File dir = isJar ? new File("./") : new File("./src/main/resources/");
+
+        File[] files = dir.listFiles((d, name) -> name.endsWith(".properties"));
+
+        return Arrays.stream(files)
+                .filter(File::isFile)
+                .filter(e -> !e.getName().equals(PROPERTIES_FILE.replace("/", "")))
+                .findFirst();
+    }
+
     private static Properties loadProperties() {
-        try (var in = PropertySource.class.getResourceAsStream(PROPERTIES_FILE)) {
-            var properties = new Properties();
-            properties.load(in);
-            return properties;
-        } catch (IOException | NullPointerException ie) {
-            throw new IllegalStateException("Could not load properties file " + PROPERTIES_FILE, ie);
-        }
+        var properties = new Properties();
+        getOtherPropertyFile().ifPresentOrElse(
+                file -> {
+                    System.out.println("Found an external property file, falling to " + file.getName());
+                    PROPERTIES_FILE = file.getAbsolutePath();
+                    try (InputStream is = Files.newInputStream(Path.of(file.getPath()))) {
+                        properties.load(is);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                },
+                () -> {
+                    try (var in = PropertySource.class.getResourceAsStream(PROPERTIES_FILE)) {
+                        properties.load(in);
+                    } catch (IOException | NullPointerException ie) {
+                        throw new IllegalStateException("Could not load properties file " + PROPERTIES_FILE, ie);
+                    }
+                }
+        );
+
+        return properties;
     }
 
     public static Properties getGroupProperties(String groupKey) {

@@ -18,6 +18,25 @@ dependencies {
     implementation group: 'joda-time', name: 'joda-time', version: '2.13.0'
 }
 
+tasks.register('customFatJar', Jar) {
+    manifest {
+        attributes 'Main-Class': 'pl.fox.photosorter.Main'
+    }
+    archiveBaseName = 'PhotoSorter'
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    from {
+        configurations.runtimeClasspath.collect { file ->
+            file.isDirectory() ? file : zipTree(file).matching {
+                exclude { details ->
+                    details.file.name.endsWith('.properties') &&
+                            details.file.name != 'env.properties'
+                }
+            }
+        }
+    }
+    with jar
+}
+
 test {
     useJUnitPlatform()
 }

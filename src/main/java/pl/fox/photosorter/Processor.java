@@ -63,7 +63,7 @@ public class Processor {
             startCopyPool(fileMap); //Async
         }
 
-        System.out.println("Files copied successfully.");
+        System.out.println("\n\tFiles copied successfully.");
         errorHandler.printErroredFiles();
     }
 
